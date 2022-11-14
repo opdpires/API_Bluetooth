@@ -101,17 +101,17 @@ int main(void) {
   /* USER CODE BEGIN WHILE */
   while (1) {
 	// RECEBER DADOS COM ble_read() E JOGAR A MENSAGEM EM UM BUFFER msg_received
-	  HAL_StatusTypeDef status = ble_read(&hi2c1, msg_received, 8);
+	  HAL_StatusTypeDef status = ble_read(&hi2c1, ble_adress, msg_received, 8);
 
-	  if (strcmp (nome, "TURN__ON") == 0) {
+	  if (strcmp (msg_received, "TURN__ON") == 0) {
 		//LIGAR LED E MODIFICAR STATUS DO LED
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
-		status_LED = "LED__ON";
+		strcpy("LED__ON", status_LED);
 	  }
-	  else if (strcmp (nome, "TURN_OFF") == 0) {
+	  else if (strcmp (msg_received, "TURN_OFF") == 0) {
 		//DESLIGAR LED E MODIFICAR STATUS DO LED
 	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
-	    status_LED = "LED_OFF";
+	    strcpy("LED_OFF", status_LED);
 	  }
 
 	  //TRANSMITIR MSG VIA BLE_WRITE

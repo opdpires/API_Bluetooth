@@ -44,13 +44,13 @@ void ble_initGPIO() {
 
 void ble_init() { ble_initGPIO(); }
 
-HAL_StatusTypeDef ble_write(I2C_HandleTypeDef *hi2c, uint8_t *buffer, uint32_t size) {
-  return HAL_I2C_Master_Transmit(hi2c, ble_adress, buffer, size, 1000);
+HAL_StatusTypeDef ble_write(I2C_HandleTypeDef *hi2c, uint16_t devAdress, uint8_t *buffer, uint32_t size) {
+  return HAL_I2C_Master_Transmit(hi2c, devAdress, buffer, size, 1000);
 }
 
-HAL_StatusTypeDef ble_read(I2C_HandleTypeDef *hi2c,
+HAL_StatusTypeDef ble_read(I2C_HandleTypeDef *hi2c, uint16_t devAdress,
                            uint8_t *buffer, uint32_t size) {
-  return HAL_I2C_Master_Receive(hi2c, ble_adress, buffer, size, 1000);
+  return HAL_I2C_Master_Receive(hi2c, devAdress, buffer, size, 1000);
 }
 
 uint16_t ble_send_info(I2C_HandleTypeDef *hi2c, const uint8_t *ble_dado,

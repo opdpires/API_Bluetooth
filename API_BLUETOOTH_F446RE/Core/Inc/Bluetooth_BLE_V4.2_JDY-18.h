@@ -48,9 +48,9 @@
 #define ble_name_default "ble_pse_LP"
 
 void ble_init();
-HAL_StatusTypeDef ble_write(I2C_HandleTypeDef *hi2c,
+HAL_StatusTypeDef ble_write(I2C_HandleTypeDef *hi2c, uint16_t devAdress,
                             uint8_t *buffer, uint32_t size);
-HAL_StatusTypeDef ble_read(I2C_HandleTypeDef *hi2c,
+HAL_StatusTypeDef ble_read(I2C_HandleTypeDef *hi2c, uint16_t devAdress,
                            uint8_t *buffer, uint32_t size);
 uint16_t ble_send_info(I2C_HandleTypeDef *hi2c, const uint8_t *, uint8_t);
 void ble_disconnect(I2C_HandleTypeDef *hi2c);
