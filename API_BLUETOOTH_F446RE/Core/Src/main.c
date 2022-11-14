@@ -68,7 +68,8 @@ static void MX_I2C1_Init(void);
  */
 int main(void) {
   /* USER CODE BEGIN 1 */
-
+  msg_to_transmit[7];
+  msg_received[8];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -78,7 +79,7 @@ int main(void) {
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  ble_init();
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -97,12 +98,38 @@ int main(void) {
   /* USER CODE END 2 */
 
   /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1) {
-    /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
+  while (1) {
+	/* USER CODE BEGIN WHILE */
+	// RECEBER DADOS COM ble_read() E JOGAR A MENSAGEM EM UM BUFFER msg_received[7]
+	  HAL_StatusTypeDef status = ble_read(&hi2c1, msg_received, 8);
+
+	  if (status == HAL_OK){
+	    if (strcmp (nome, "TURN__ON") == 0) {
+		  //LIGAR LED
+	      status_LED = "LED__ON";
+	      //TRANSMITIR MSG VIA BLE_WRITE
+	    }
+	    else if (strcmp (nome, "TURN_OFF") == 0) {
+		  //DESLIGAR LEDS
+	      status_LED = "LED_OFF";
+	      //TRANSMITIR MSG VIA BLE_WRITE
+	    }
+	  }
+
+	  //TRANSMITIR MSG PARA O APP
+
+
+	// SE msg_received[8] == "TURN__ON", LIGAR O LED
+	// SE msg_received[8] == "TURN_OFF", DESLIGAR O LED
+	// RETORNAR ESTADO DO LED COM blw_write() A TRAVES DA MENSAGEM msg_to_transmit[8]
+	// MENSAGEM PODE SER
+	  // msg_to_transmit[7] == "LED__ON"
+	  // msg_to_transmit[7] == "LED_OFF"
+    /* USER CODE END WHILE */
   }
+  /* USER CODE BEGIN 3 */
+
   /* USER CODE END 3 */
 }
 

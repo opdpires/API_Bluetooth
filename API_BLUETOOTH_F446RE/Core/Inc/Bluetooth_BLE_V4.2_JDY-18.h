@@ -36,15 +36,11 @@
 
 #define ble_adress 0xa0
 #define ble_reset_adress 0x10
-#define ble_sleep_adress 0x13
-#define ble_name_adress 0x30
-#define ble_password_adress 0x41
+//#define ble_sleep_adress 0x13
+//#define ble_name_adress 0x30
 #define ble_writeapp_adress 0xf0
 #define ble_readapp_adress 0xf2
 #define ble_disconnect_adress 0x15
-#define ble_password_adress 0x41
-#define ble_passwordswitch_adress 0x40
-#define ble_passwordswitch_bit 0x01
 #define ble_disconnect_bit 0x01
 #define ble_reset_bit 0x01
 
@@ -52,12 +48,14 @@
 #define ble_name_default "ble_pse_LP"
 
 void ble_init();
-HAL_StatusTypeDef ble_write(I2C_HandleTypeDef *hi2c, uint8_t param,
+HAL_StatusTypeDef ble_write(I2C_HandleTypeDef *hi2c,
                             uint8_t *buffer, uint32_t size);
-HAL_StatusTypeDef ble_read(I2C_HandleTypeDef *hi2c, uint8_t param,
+HAL_StatusTypeDef ble_read(I2C_HandleTypeDef *hi2c,
                            uint8_t *buffer, uint32_t size);
 uint16_t ble_send_info(I2C_HandleTypeDef *hi2c, const uint8_t *, uint8_t);
 void ble_disconnect(I2C_HandleTypeDef *hi2c);
 void ble_reset(I2C_HandleTypeDef *hi2c);
+
+extern I2C_HandleTypeDef hi2c1;
 
 #endif /* INC_BLUETOOTH_BLE_V4_2_JDY_18_H_ */

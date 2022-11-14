@@ -32,7 +32,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "Bluetooth_BLE_V4.2_JDY-18.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
