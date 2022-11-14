@@ -68,8 +68,11 @@ static void MX_I2C1_Init(void);
  */
 int main(void) {
   /* USER CODE BEGIN 1 */
-  msg_to_transmit[7];
-  msg_received[8];
+  uint8_t status_LED[7];
+  uint8_t msg_received[8];
+
+
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -104,28 +107,23 @@ int main(void) {
 	// RECEBER DADOS COM ble_read() E JOGAR A MENSAGEM EM UM BUFFER msg_received[7]
 	  HAL_StatusTypeDef status = ble_read(&hi2c1, msg_received, 8);
 
-	  if (status == HAL_OK){
-	    if (strcmp (nome, "TURN__ON") == 0) {
-		  //LIGAR LED
-	      status_LED = "LED__ON";
-	      //TRANSMITIR MSG VIA BLE_WRITE
-	    }
-	    else if (strcmp (nome, "TURN_OFF") == 0) {
-		  //DESLIGAR LEDS
-	      status_LED = "LED_OFF";
-	      //TRANSMITIR MSG VIA BLE_WRITE
-	    }
+	  if (strcmp (nome, "TURN__ON") == 0) {
+		//LIGAR LED
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET));
+		status_LED = "LED__ON";
+	  }
+	  else if (strcmp (nome, "TURN_OFF") == 0) {
+		//DESLIGAR LED
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET));
+	    status_LED = "LED_OFF";
 	  }
 
+	  //TRANSMITIR MSG VIA BLE_WRITE
+	  ble_write(&hi2c1, ble_writeapp_adress, status_LED, sizeof(status_LED));
+
 	  //TRANSMITIR MSG PARA O APP
+	  ble_send_info(&hi2c1, status_LED, sizeof(status_LED));
 
-
-	// SE msg_received[8] == "TURN__ON", LIGAR O LED
-	// SE msg_received[8] == "TURN_OFF", DESLIGAR O LED
-	// RETORNAR ESTADO DO LED COM blw_write() A TRAVES DA MENSAGEM msg_to_transmit[8]
-	// MENSAGEM PODE SER
-	  // msg_to_transmit[7] == "LED__ON"
-	  // msg_to_transmit[7] == "LED_OFF"
     /* USER CODE END WHILE */
   }
   /* USER CODE BEGIN 3 */
