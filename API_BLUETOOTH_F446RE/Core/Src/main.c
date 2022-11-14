@@ -41,7 +41,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
-
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -71,8 +70,6 @@ int main(void) {
   uint8_t status_LED[7];
   uint8_t msg_received[8];
 
-
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -101,20 +98,19 @@ int main(void) {
   /* USER CODE END 2 */
 
   /* Infinite loop */
-
+  /* USER CODE BEGIN WHILE */
   while (1) {
-	/* USER CODE BEGIN WHILE */
-	// RECEBER DADOS COM ble_read() E JOGAR A MENSAGEM EM UM BUFFER msg_received[7]
+	// RECEBER DADOS COM ble_read() E JOGAR A MENSAGEM EM UM BUFFER msg_received
 	  HAL_StatusTypeDef status = ble_read(&hi2c1, msg_received, 8);
 
 	  if (strcmp (nome, "TURN__ON") == 0) {
-		//LIGAR LED
-		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET));
+		//LIGAR LED E MODIFICAR STATUS DO LED
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
 		status_LED = "LED__ON";
 	  }
 	  else if (strcmp (nome, "TURN_OFF") == 0) {
-		//DESLIGAR LED
-	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET));
+		//DESLIGAR LED E MODIFICAR STATUS DO LED
+	    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
 	    status_LED = "LED_OFF";
 	  }
 
@@ -127,7 +123,7 @@ int main(void) {
     /* USER CODE END WHILE */
   }
   /* USER CODE BEGIN 3 */
-
+  ble_disconnect(&hi2c1);
   /* USER CODE END 3 */
 }
 

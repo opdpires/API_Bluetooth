@@ -56,6 +56,4 @@ uint16_t ble_send_info(I2C_HandleTypeDef *hi2c, const uint8_t *, uint8_t);
 void ble_disconnect(I2C_HandleTypeDef *hi2c);
 void ble_reset(I2C_HandleTypeDef *hi2c);
 
-extern I2C_HandleTypeDef hi2c1;
-
 #endif /* INC_BLUETOOTH_BLE_V4_2_JDY_18_H_ */
