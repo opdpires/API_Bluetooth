@@ -90,11 +90,16 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  setupBLE(&huart1);
+  setupBLE(&huart1, &huart2);
   setName("myBLEModuleYES");
 //  setBeaconUuid("FDB50693A4E24FB1AFCFC6EB07647825");
   setRole(MASTER);
-  masterScanForSlaves();
+  Device_t *devices = masterScanForSlaves(&huart2);
+  char message[100];
+//  char *message = "Roi \r\n";
+
+  sprintf(message, "Device %d has mac %s, signal strength %d and name %s \r\n", devices[0].index, devices[0].mac, devices[0].signalStrength, devices[0].name);
+  HAL_UART_Transmit(&huart2, (uint8_t *) message, strlen (message), HAL_MAX_DELAY);
 
   /* USER CODE END 2 */
 

@@ -68,7 +68,8 @@ typedef struct {
 	char *name;
 } Device_t;
 
-void setupBLE(UART_HandleTypeDef *huartInterface);
+void setupBLE(UART_HandleTypeDef *huartInterface, UART_HandleTypeDef *loggingInterface);
+//void setupBLE(UART_HandleTypeDef *huartInterface);
 void setName (char *name);
 void setRole (Role_t role);
 void setBaud (BaudRate_t baud);

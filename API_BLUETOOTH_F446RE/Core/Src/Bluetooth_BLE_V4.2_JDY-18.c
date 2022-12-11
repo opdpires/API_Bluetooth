@@ -32,13 +32,16 @@ char *atInstructions[] = {
 };
 
 UART_HandleTypeDef *huart;
+UART_HandleTypeDef *loggingHuart;
 
 void sendInstruction (AtInstruction_t instruction, char* parameter);
 char** str_split (char* a_str, const char a_delim);
-int getSubstring(char *source, char *target,int from, int to);
+int getSubstring (char *source, char *target,int from, int to);
+void sendToLogger (char *msg);
 
-void setupBLE(UART_HandleTypeDef *huartInterface) {
+void setupBLE(UART_HandleTypeDef *huartInterface, UART_HandleTypeDef *loggingInterface) {
 	huart = huartInterface;
+	loggingHuart = loggingInterface;
 	sendInstruction(SET_PERMISSIONS, "11111");
 }
 
@@ -80,15 +83,25 @@ void setBeaconTramsmittingPower (int powerPercentage) {
 }
 
 Device_t* masterScanForSlaves () {
-	char inputBuffer[100] = "";
+
+	char inputBuffer[100];
 	char *allText = (char *) malloc(1000 * sizeof(char));
 	// Send the scan request
+	sendToLogger("About to inquire \r\n");
 	sendInstruction(MASTER_SCAN_FOR_SLAVES, "");
+	sendToLogger("Inquired \r\n");
+	// If we don't have this, the program hangs during the reception of data.
+	char *unused1 = "Unused";
+	char *unused2 = "Unused";
+	char *unused3 = "Unused";
 	// Receive the scan answer
-	while(!(strstr(allText, "STOP:SCAN") != NULL)) {
+	while(!((strstr(allText, "STOP:SCAN") != NULL))) {
 		HAL_UART_Receive(huart, (uint8_t *) inputBuffer, 1, HAL_MAX_DELAY);
 		strcat(allText, inputBuffer);
 	}
+	sendToLogger("Received \r\n");
+	sendToLogger(allText);
+	sendToLogger("\r\nRetransmitted \r\n");
 	// Break the scan into lines:
 	char** lines = str_split(allText, '\n');
 	// First line contains trash. We have to remove it.
@@ -104,7 +117,7 @@ Device_t* masterScanForSlaves () {
 	while (*(lines + nbOfEntries) != 0) nbOfEntries++;
 	nbOfEntries--;
 	Device_t *entries = (Device_t *) malloc(nbOfEntries * sizeof(Device_t));
-	for (int i = 0; i < nbOfEntries; i++) {
+	for (int i = 0; i < nbOfEntries - 1; i++) {
 		char **tokens = str_split(lines[i], ',');
 		getSubstring(tokens[0], tokens[0], 7, strlen(tokens[0]));
 		getSubstring(tokens[2], tokens[2], 0, strlen(tokens[2])-2);
@@ -204,6 +217,9 @@ int  getSubstring(char *source, char *target,int from, int to)
 	return 0;
 }
 
+void sendToLogger (char *msg) {
+	HAL_UART_Transmit(loggingHuart, (uint8_t *) msg, strlen(msg), HAL_MAX_DELAY);
+}
 //void ble_resetHardware() {
 //#if ble_GPIOreset_turnedOnState
 //  HAL_GPIO_WritePin(ble_GPIOreset_PORT, ble_GPIOreset_PIN, GPIO_PIN_SET);
