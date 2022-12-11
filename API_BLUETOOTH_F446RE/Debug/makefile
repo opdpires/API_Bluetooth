@@ -61,8 +61,8 @@ all: main-build
 main-build: API_BLUETOOTH_F446RE.elf secondary-outputs
 
 # Tool invocations
-API_BLUETOOTH_F446RE.elf: $(OBJS) $(USER_OBJS) /media/hdd/Arquivos/Documents/Estudo/UFMG/2022-2/Programação\ de\ Sistemas\ Embarcados/Trabalho\ 1/API_Bluetooth/API_BLUETOOTH_F446RE/STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "API_BLUETOOTH_F446RE.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/media/hdd/Arquivos/Documents/Estudo/UFMG/2022-2/Programação de Sistemas Embarcados/Trabalho 1/API_Bluetooth/API_BLUETOOTH_F446RE/STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="API_BLUETOOTH_F446RE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+API_BLUETOOTH_F446RE.elf: $(OBJS) $(USER_OBJS) /home/leandro/Documentos/Estudo/UFMG/2022-2/Programação\ de\ Sistemas\ Embarcados/Trabalho\ 1/API_Bluetooth/API_BLUETOOTH_F446RE/STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "API_BLUETOOTH_F446RE.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/leandro/Documentos/Estudo/UFMG/2022-2/Programação de Sistemas Embarcados/Trabalho 1/API_Bluetooth/API_BLUETOOTH_F446RE/STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="API_BLUETOOTH_F446RE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
